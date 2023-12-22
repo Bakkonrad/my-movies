@@ -9,14 +9,14 @@ using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var credential = new Azure.Identity.DefaultAzureCredential();
+// var credential = new Azure.Identity.DefaultAzureCredential();
 
-builder.Configuration.AddAzureKeyVault(
-    new Uri("https://mymovieskeyvault.vault.azure.net/"), credential);
+// builder.Configuration.AddAzureKeyVault(
+//     new Uri("https://mymovieskeyvault.vault.azure.net/"), credential);
 
 builder.Services.AddDbContext<MoviesDb>(options =>
 {
-    var connectionString = builder.Configuration["MyMoviesApiConnString"];
+    var connectionString = builder.Configuration.GetConnectionString("MoviesDb");
     options.UseSqlServer(connectionString);
 });
 

@@ -17,19 +17,19 @@ namespace MyMoviesApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Movie> GetPeople()
+        public IEnumerable<Movie> GetMovies()
         {
             return moviesService.GetMovies();
         }
 
         [HttpGet("{id}")]
-        public Movie FindMovie([FromRoute] int id)
+        public Movie GetMovie(int id)
         {
-            return moviesService.FindMovie(id);
+            return moviesService.GetMovie(id);
         }
 
         [HttpPost]
-        public Movie AddPerson([FromBody] Movie movie)
+        public Movie AddMovie([FromBody] Movie movie)
         {
             return moviesService.AddMovie(movie);
         }

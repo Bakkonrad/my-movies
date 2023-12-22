@@ -9,14 +9,18 @@
         public int rate { get; set; }
 
 
-        public MovieEntity Create(int id, string title, string director, int year, int rate)
+        public static MovieEntity Create(string title, string director, int year, int rate)
         {
-            this.id = id;
-            this.title = title;
-            this.director = director;
-            this.year = year;
-            this.rate = rate;
-            return this;
+            var entity = new MovieEntity
+            {
+                title = title,
+                director = director,
+                year = year,
+                rate = rate
+            };
+            
+            return entity;
         }
     }
+    
 }

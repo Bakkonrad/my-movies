@@ -14,33 +14,45 @@ namespace MovieApp
 
         public IEnumerable<Movie> GetMovies()
         {
-            throw new NotImplementedException();
-            // return moviesDb.Movies;
+            var movies = moviesDb.Movies.ToList();
+            return movies.Select(MapToDTO);
         }
 
-        public Movie FindMovie(int id)
+        public Movie GetMovie(int id)
         {
-            throw new NotImplementedException();
-            // return moviesDb.Movies.Find(id);
+            var movie = moviesDb.Movies.FirstOrDefault(m => m.id == id) ?? throw new Exception("Movie not found");
+            return MapToDTO(movie);
         }
 
         public Movie AddMovie(Movie movie)
         {
-            // moviesDb.Movies.Add(movie);
+            if (moviesDb.Movies.Any(m => m.title == movie.title))
+            {
+                throw new Exception("A movie with the same title already exists");
+            }
+            var movieEntity = MovieEntity.Create(movie.title, movie.director, movie.year, movie.rate);
+            moviesDb.Movies.Add(movieEntity);
             moviesDb.SaveChanges();
-            return movie;
+            movie.id = movieEntity.id;
+            return MapToDTO(movieEntity);
         }
 
         public Movie UpdateMovie(Movie movie)
         {
-            // moviesDb.Movies.Update(movie);
+            var movieEntity = moviesDb.Movies.FirstOrDefault(m => m.id == movie.id) ?? throw new Exception("Movie not found");
+            movieEntity.title = movie.title;
+            movieEntity.director = movie.director;
+            movieEntity.year = movie.year;
+            movieEntity.rate = movie.rate;
+
             moviesDb.SaveChanges();
-            return movie;
+
+            return MapToDTO(movieEntity);
         }
 
         public void DeleteMovie(int id)
         {
-            var movie = moviesDb.Movies.Find(id);
+            var movie = moviesDb.Movies.FirstOrDefault(m => m.id == id) ?? throw new Exception("Movie not found");
             moviesDb.Movies.Remove(movie);
             moviesDb.SaveChanges();
         }
