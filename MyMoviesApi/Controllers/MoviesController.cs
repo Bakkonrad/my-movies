@@ -33,5 +33,35 @@ namespace MyMoviesApi.Controllers
         {
             return moviesService.AddMovie(movie);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateMovie([FromBody] Movie movie)
+        {
+            try
+            {
+                var updatedMovie = moviesService.UpdateMovie(movie);
+                return Ok(updatedMovie);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error updating movie with id {movie.id}");
+                return BadRequest("Error updating movie");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteMovie(int id)
+        {
+            try
+            {
+                moviesService.DeleteMovie(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error deleting movie with id {id}");
+                return BadRequest("Error deleting movie");
+            }
+        }
     }
 }

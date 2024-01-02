@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<MoviesDb>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("MoviesDb");
+    var connectionString = builder.Configuration["ConnectionStrings:MoviesDb"];
     options.UseSqlServer(connectionString);
 });
 
