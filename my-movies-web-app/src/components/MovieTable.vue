@@ -10,14 +10,15 @@
                 </h4>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
-                    <thead>
+                <table class="table table-light table-striped">
+                    <thead class="table-dark">
                         <tr>
                             <th>Id</th>
                             <th>Title</th>
                             <th>Year</th>
                             <th>Director</th>
                             <th>Rate</th>
+                            <th class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody v-if="this.movies.length > 0 && this.responseCode == 200">
@@ -27,8 +28,8 @@
                             <td>{{ movie.year }}</td>
                             <td>{{ movie.director }}</td>
                             <td>{{ movie.rate }}</td>
-                            <td>
-                                <button class="btn btn-success" @click="openEditModal(movie)">
+                            <td class="text-end">
+                                <button class="btn btn-success" @click="openEditModal(movie)" >
                                     Edit
                                 </button>
                                 <span>&nbsp;</span>
@@ -45,8 +46,7 @@
                     </tbody>
                     <tbody v-else-if="this.responseCode != 200 && this.loaded == true">
                         <tr>
-                            <td colspan="6" class="text-center">Error loading movies...</td>
-                            <td colspan="6" class="text-center">{{ err }}</td>
+                            <td colspan="6" class="text-center">Error loading movies... {{ err }}</td>
                         </tr>
                     </tbody>
                     <tbody v-else-if="this.loaded == false">
@@ -93,7 +93,7 @@ export default {
                 });
         },
         openAddModal() {
-        this.selectedMovie = null;
+        this.selectedMovie = { title: '', director: '', year: '', rate: '', id: null };
         this.$refs.movieModal.OpenCloseFun();
         },
         openEditModal(movie) {
@@ -142,3 +142,12 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+.table-dark th {
+    background-color: rgb(185, 185, 185);
+    color: #ffffff;
+    font-weight: bold;
+}
+</style>

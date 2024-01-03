@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ selectedMovie ? 'Edit Movie' : 'Add Movie' }}</h5>
+                    <h5 class="modal-title">{{ movie.id ? 'Edit Movie' : 'Add Movie' }}</h5>
                     <button type="button" class="btn-close" @click="OpenCloseFun()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="OpenCloseFun()" >Close</button>
-                    <button type="button" class="btn btn-success" @click="OpenCloseFun()" >{{ selectedMovie ? 'Update' : 'Add' }}</button>
+                    <button type="button" class="btn btn-success" @click="Save()" >{{ movie.id ? 'Update' : 'Add' }}</button>
                 </div>
             </div>
         </div>
@@ -49,7 +49,8 @@ export default {
     },
     data() {
         return {
-            OpenClose: this.visible
+            OpenClose: this.visible,
+            selectedMovie: this.movie
         }
     },
     methods: {
@@ -61,13 +62,10 @@ export default {
         visible: function (newVal) {
             this.OpenClose = newVal;
         },
-        movie: function (newVal) {
+        movie: function(newVal) {
             this.selectedMovie = newVal;
         }
     }
-
-    
-
 }
 
 </script>
