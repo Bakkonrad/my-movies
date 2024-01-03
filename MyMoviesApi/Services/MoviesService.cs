@@ -69,6 +69,20 @@ namespace MovieApp
                 rate = entity.rate
             };
         }
+
+        public IEnumerable<Movie> SyncExternalMovies(List<Movie> externalMovies)
+        {
+            var movies = moviesDb.Movies.ToList();
+            var moviesToAdd = externalMovies.Where(em => !movies.Any(m => m.title == em.title));
+            foreach (var movie in moviesToAdd)
+            {
+                var movieEntity = MovieEntity.Create(movie.title, movie.director, movie.year, movie.rate);
+                moviesDb.Movies.Add(movieEntity);
+            }
+            moviesDb.SaveChanges();
+            return moviesToAdd;
+            
+        }
     }
 
 }

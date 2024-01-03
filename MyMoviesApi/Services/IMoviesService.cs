@@ -1,3 +1,4 @@
+
 namespace MovieApp
 {
     public interface IMoviesService
@@ -7,6 +8,7 @@ namespace MovieApp
         Movie AddMovie(Movie movie);
         Movie UpdateMovie(Movie movie);
         void DeleteMovie(int id);
+        IEnumerable<Movie> SyncExternalMovies(List<Movie> externalMovies);
     }
 
 }

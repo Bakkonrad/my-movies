@@ -3,10 +3,10 @@
         <div class="card">
             <div class="card-header">
                 <h4>
-                    MyMovies
-                    <button class="btn btn-primary float-end " @click="openAddModal">
-                        Add Movie
-                    </button>
+                    My Movies
+                    <button class="btn btn-primary float-end " @click="openAddModal">Add movie</button>
+                    <span class="float-end">&nbsp;</span>
+                    <button class="btn btn-primary float-end " @click="syncExternalMovies">Download external movies</button>
                 </h4>
             </div>
             <div class="card-body">
@@ -31,6 +31,7 @@
                                 <button class="btn btn-success" @click="openEditModal(movie)">
                                     Edit
                                 </button>
+                                <span>&nbsp;</span>
                                 <button type="button" class="btn btn-danger" @click="confirmDelete(movie.id)">
                                     Delete
                                 </button>
@@ -57,7 +58,7 @@
             </div>
         </div>
     </div>
-    <MovieModal ref="movieModal"/>
+    <MovieModal ref="movieModal" :movie="selectedMovie"/>
 </template>
 
 <script>
@@ -92,11 +93,11 @@ export default {
                 });
         },
         openAddModal() {
-        this.selectedMovie = null; // No movie is selected when adding a new movie
+        this.selectedMovie = null;
         this.$refs.movieModal.OpenCloseFun();
         },
         openEditModal(movie) {
-        this.selectedMovie = movie; // The clicked movie is selected when editing
+        this.selectedMovie = movie;
         this.$refs.movieModal.OpenCloseFun();
         },
         saveMovie(movie) {
@@ -125,9 +126,19 @@ export default {
                     this.loaded = true
                 });
         },
+        async syncExternalMovies() {
+                axios.get('http://localhost:5178/Movies/external').then(res => {
+                    this.getMovies();
+                })
+                    .catch(err => {
+                        this.responseCode = err.response.status
+                        this.err = err.response.data
+                        this.loaded = true
+                    });
+        }
     },
     components: {
     MovieModal,
-},
+    }
 }
 </script>

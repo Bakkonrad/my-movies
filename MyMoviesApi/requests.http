@@ -8,9 +8,19 @@ content-type: application / json
     "rate": 7.0
 }
 
+PUT http://localhost:5178/Movies/11 HTTP/1.1
+content-type: application / json
+
+{
+    "title": "Body/Ciało",
+    "year": 2015,
+    "director": "Małgorzata Szumowska",
+    "rate": 7.6
+}
 
 
-GET http://localhost:5178/Movies HTTP/1.1
+
+GET http://localhost:5178/Movies/external HTTP/1.1
 content-type: application/json
 
 {
