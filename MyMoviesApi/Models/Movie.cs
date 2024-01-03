@@ -6,7 +6,7 @@ namespace MovieApp
         public string title { get; set; }
         public string director { get; set; }
         public int year { get; set; }
-        public int rate { get; set; }
+        public double rate { get; set; }
     }
 
 }

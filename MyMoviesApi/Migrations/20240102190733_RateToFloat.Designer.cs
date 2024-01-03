@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyMoviesApi.Database;
 
@@ -10,9 +11,11 @@ using MyMoviesApi.Database;
 namespace MyMoviesApi.Migrations
 {
     [DbContext(typeof(MoviesDb))]
-    partial class MoviesDbModelSnapshot : ModelSnapshot
+    [Migration("20240102190733_RateToFloat")]
+    partial class RateToFloat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

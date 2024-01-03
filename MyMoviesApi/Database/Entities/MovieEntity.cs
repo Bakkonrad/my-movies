@@ -6,10 +6,10 @@
         public string title { get; set; }
         public string director { get; set; }
         public int year { get; set; }
-        public int rate { get; set; }
+        public double rate { get; set; }
 
 
-        public static MovieEntity Create(string title, string director, int year, int rate)
+        public static MovieEntity Create(string title, string director, int year, double rate)
         {
             var entity = new MovieEntity
             {

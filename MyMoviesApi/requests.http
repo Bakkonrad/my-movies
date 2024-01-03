@@ -2,11 +2,13 @@ POST http://localhost:5178/Movies HTTP/1.1
 content-type: application / json
 
 {
-    "title": "Indiana Jones: Raiders of the Lost Ark",
-    "year": 1981,
-    "director": "Steven Spielberg",
-    "rate": 8
+    "title": "Body/Ciało",
+    "year": 2015,
+    "director": "Małgorzata Szumowska",
+    "rate": 7.0
 }
+
+
 
 GET http://localhost:5178/Movies HTTP/1.1
 content-type: application/json

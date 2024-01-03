@@ -34,7 +34,7 @@ namespace MyMoviesApi.Database
 
             entity.Property(x => x.rate)
                 .HasColumnName("rate")
-                .HasColumnType("int");
+                .HasColumnType("float");
             
         }
 
