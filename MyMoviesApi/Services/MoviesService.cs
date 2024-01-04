@@ -26,10 +26,6 @@ namespace MovieApp
 
         public Movie AddMovie(Movie movie)
         {
-            if (moviesDb.Movies.Any(m => m.title == movie.title))
-            {
-                throw new Exception("A movie with the same title already exists");
-            }
             var movieEntity = MovieEntity.Create(movie.title, movie.director, movie.year, movie.rate);
             moviesDb.Movies.Add(movieEntity);
             moviesDb.SaveChanges();

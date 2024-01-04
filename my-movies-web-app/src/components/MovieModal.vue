@@ -9,7 +9,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                    <label for="movieTitle" class="form-label" >Title*</label>
+                    <label for="movieTitle" class="form-label" >Title</label>
                     <input type="text" class="form-control" id="movieTitle" v-model="selectedMovie.title">
                     <p class="error" v-for="error of v$.selectedMovie.title.$errors" :key="error.$uid">{{ error.$message }}</p>
                     </div>
@@ -70,9 +70,9 @@ export default {
         return {
         selectedMovie: {
             title: { required, maxLength: maxLength(200), $autoDirty: true },
-            year: { numeric, between: between(1900, 2200), $autoDirty: true },
-            director: { $autoDirty: true },
-            rate: { numeric, $autoDirty: true}
+            year: { required, numeric, between: between(1900, 2200), $autoDirty: true },
+            director: { required, $autoDirty: true },
+            rate: { required, numeric, $autoDirty: true}
             }
         }
     },

@@ -83,6 +83,7 @@ export default {
                 this.movies = res.data
                 this.responseCode = res.status
                 this.loaded = true
+                this.err = null
             })
                 .catch(this.handleError);
         },
