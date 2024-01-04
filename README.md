@@ -15,4 +15,5 @@ There are two ways of trying out this application. You can either test one hoste
 - clone this repo
 - go in your terminal to web app directory inside repo `cd  mymovies/my-movies-web-app/`
 - run `npm  install` to install all the dependencies that are specified in the `package.json` file.
-- run `npm  run  serve` to compile and host web app on your local machine
+- run `npm  run  dev` to compile and host web app on your local machine
+- open your browser and go to `http://localhost:5173/` to see the app
