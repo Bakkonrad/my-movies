@@ -2,10 +2,11 @@ POST http://localhost:5178/Movies HTTP/1.1
 content-type: application / json
 
 {
-    "title": "Body/Ciało",
+    "title": "Body",
     "year": 2015,
     "director": "Małgorzata Szumowska",
-    "rate": 7.0
+    "rate": 7.0,
+    "id": 0
 }
 
 PUT http://localhost:5178/Movies/11 HTTP/1.1

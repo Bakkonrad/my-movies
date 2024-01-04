@@ -11,6 +11,7 @@
                     <div class="mb-3">
                     <label for="movieTitle" class="form-label" >Title</label>
                     <input type="text" class="form-control" id="movieTitle" v-model="movie.title">
+                    <div v-if="$v.selectedMovie.title.$error" class="error">Title is required and must not exceed 200 characters</div>
                     </div>
                     <div class="mb-3">
                     <label for="movieDirector" class="form-label">Director</label>
@@ -19,6 +20,7 @@
                     <div class="mb-3">
                     <label for="movieYear" class="form-label">Year</label>
                     <input type="text" class="form-control" id="movieYear" v-model="movie.year">
+                    <div v-if="$v.selectedMovie.year.$error" class="error">Year is required and must be between 1900 and 2200</div>
                     </div>
                     <div class="mb-3">
                     <label for="movieRate" class="form-label">Rate</label>
@@ -35,6 +37,9 @@
 </template>
 
 <script>
+import useVelidate from '@vuelidate/core'
+import { required, maxLength, between } from '@vuelidate/validators'
+
 export default {
     name: 'MovieModal',
     props: {
@@ -49,8 +54,19 @@ export default {
     },
     data() {
         return {
+            v$: useVelidate(),
             OpenClose: this.visible,
             selectedMovie: Object.assign({}, this.movie),
+        }
+    },
+    validations() {
+        return {
+        selectedMovie: {
+            title: { required, maxLength: maxLength(200) },
+            year: { required, between: between(1900, 2200) },
+            director: {required},
+            rate: {required}
+            }
         }
     },
     methods: {
@@ -58,6 +74,11 @@ export default {
             this.OpenClose = !this.OpenClose;
         },
         Save() {
+            console.log(this.v$)
+            this.v$.$validate()
+            if (this.v$.$error) {
+                return;
+            }
             this.$emit('saveMovie', this.selectedMovie);
             this.OpenClose = false;
         }

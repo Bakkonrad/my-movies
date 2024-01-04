@@ -10,6 +10,7 @@
                 </h4>
             </div>
             <div class="error center-text" v-if="err">{{ err }}</div>
+            <div class="success center-text" v-if="successMessage">{{ successMessage }}</div>
             <div class="card-body">
                 <table class="table table-light table-striped">
                     <thead class="table-dark">
@@ -70,6 +71,7 @@ export default {
             err: null,
             selectedMovie: null,
             responseCode: null,
+            successMessage: null
         }
     },
     mounted() {
@@ -77,12 +79,12 @@ export default {
     },
     methods: {
         getMovies() {
-            axios.get('http://localhost:5178/Movies').then(res => {
+            axios.get('https://mymoviesapi2024.azurewebsites.net/movies').then(res => {
                 this.movies = res.data
                 this.responseCode = res.status
                 this.loaded = true
             })
-            .catch(this.handleError);
+                .catch(this.handleError);
         },
         openAddModal() {
             this.selectedMovie = { title: '', director: '', year: '', rate: '', id: null };
@@ -106,48 +108,53 @@ export default {
             }
         },
         deleteMovie(id) {
-            axios.delete('http://localhost:5178/Movies/' + id).then(res => {
+            axios.delete('https://mymoviesapi2024.azurewebsites.net/movies/' + id).then(res => {
+                this.successMessage = 'Movie successfully deleted!';
                 this.getMovies();
             })
-            .catch(this.handleError);
+                .catch(this.handleError);
         },
         async syncExternalMovies() {
-            axios.get('http://localhost:5178/Movies/external').then(res => {
+            axios.get('https://mymoviesapi2024.azurewebsites.net/movies/external').then(res => {
+                this.successMessage = 'External movies successfully added!';
                 this.getMovies();
             })
-            .catch(error => {
-                this.handleError(error);
-            });
+                .catch(error => {
+                    this.handleError(error);
+                });
         },
         addMovie(movie) {
-            axios.post('http://localhost:5178/Movies/', movie).then(res => {
+            movie.id = 0;
+            axios.post('https://mymoviesapi2024.azurewebsites.net/movies/', movie).then(res => {
+                this.successMessage = 'Movie successfully added!';
                 this.getMovies();
             })
-            .catch(this.handleError);
+                .catch(this.handleError);
         },
         updateMovie(movie) {
-            axios.put('http://localhost:5178/Movies/' + movie.id, movie).then(res => {
+            axios.put('https://mymoviesapi2024.azurewebsites.net/movies/' + movie.id, movie).then(res => {
+                this.successMessage = 'Movie successfully updated!';
                 this.getMovies();
             })
-            .catch(this.handleError);
+                .catch(this.handleError);
         },
         handleError(err) {
             if (err.response) {
-            // The request was made and the server responded with a status code
-            this.responseCode = err.response.status;
-            this.err = err.message;
+                // The request was made and the server responded with a status code
+                this.responseCode = err.response.status;
+                this.err = err.message;
             } else if (err.request) {
-            // The request was made but no response was received
-            this.err = 'No response received from the server.';
+                // The request was made but no response was received
+                this.err = 'No response received from the server.';
             } else {
-            // Something happened in setting up the request that triggered an Error
-            this.err = 'An error occurred while setting up the request.';
+                // Something happened in setting up the request that triggered an Error
+                this.err = 'An error occurred while setting up the request.';
             }
             this.loaded = true;
         },
     },
-components: {
-    MovieModal
+    components: {
+        MovieModal
     }
 }
 </script>
@@ -159,10 +166,16 @@ components: {
     color: #ffffff;
     font-weight: bold;
 }
+
 .center-text {
     text-align: center;
 }
+
 .error {
     color: red;
+}
+
+.success {
+    color: green;
 }
 </style>
