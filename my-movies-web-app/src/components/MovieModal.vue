@@ -4,32 +4,34 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ movie.id ? 'Edit Movie' : 'Add Movie' }}</h5>
+                    <h5 class="modal-title">{{ selectedMovie.id ? 'Edit Movie' : 'Add Movie' }}</h5>
                     <button type="button" class="btn-close" @click="OpenCloseFun()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                    <label for="movieTitle" class="form-label" >Title</label>
-                    <input type="text" class="form-control" id="movieTitle" v-model="movie.title">
-                    <div v-if="$v.selectedMovie.title.$error" class="error">Title is required and must not exceed 200 characters</div>
+                    <label for="movieTitle" class="form-label" >Title*</label>
+                    <input type="text" class="form-control" id="movieTitle" v-model="selectedMovie.title">
+                    <p class="error" v-for="error of v$.selectedMovie.title.$errors" :key="error.$uid">{{ error.$message }}</p>
                     </div>
                     <div class="mb-3">
                     <label for="movieDirector" class="form-label">Director</label>
-                    <input type="text" class="form-control" id="movieDirector" v-model="movie.director">
+                    <input type="text" class="form-control" id="movieDirector" v-model="selectedMovie.director">
+                    <p class="error" v-for="error of v$.selectedMovie.director.$errors" :key="error.$uid">{{ error.$message }}</p>
                     </div>
                     <div class="mb-3">
                     <label for="movieYear" class="form-label">Year</label>
-                    <input type="text" class="form-control" id="movieYear" v-model="movie.year">
-                    <div v-if="$v.selectedMovie.year.$error" class="error">Year is required and must be between 1900 and 2200</div>
+                    <input type="number" class="form-control" id="movieYear" v-model="selectedMovie.year">
+                    <p class="error" v-for="error of v$.selectedMovie.year.$errors" :key="error.$uid">{{ error.$message }}</p>
                     </div>
                     <div class="mb-3">
                     <label for="movieRate" class="form-label">Rate</label>
-                    <input type="text" class="form-control" id="movieRate" v-model="movie.rate">
+                    <input type="number" class="form-control" id="movieRate" v-model="selectedMovie.rate">
+                    <p class="error" v-for="error of v$.selectedMovie.rate.$errors" :key="error.$uid">{{ error.$message }}</p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="OpenCloseFun()" >Close</button>
-                    <button type="button" class="btn btn-success" @click="Save()" >{{ movie.id ? 'Update' : 'Add' }}</button>
+                    <button type="button" class="btn btn-success" @click="Save()" >{{ selectedMovie.id ? 'Update' : 'Add' }}</button>
                 </div>
             </div>
         </div>
@@ -37,8 +39,8 @@
 </template>
 
 <script>
-import useVelidate from '@vuelidate/core'
-import { required, maxLength, between } from '@vuelidate/validators'
+import useVuelidate from '@vuelidate/core'
+import { required, maxLength, between, numeric } from '@vuelidate/validators'
 
 export default {
     name: 'MovieModal',
@@ -54,18 +56,23 @@ export default {
     },
     data() {
         return {
-            v$: useVelidate(),
+            v$: useVuelidate(),
             OpenClose: this.visible,
-            selectedMovie: Object.assign({}, this.movie),
+            selectedMovie: this.movie ? this.movie : {
+                title: '',
+                year: '',
+                director: '',
+                rate: ''
+            }
         }
     },
     validations() {
         return {
         selectedMovie: {
-            title: { required, maxLength: maxLength(200) },
-            year: { required, between: between(1900, 2200) },
-            director: {required},
-            rate: {required}
+            title: { required, maxLength: maxLength(200), $autoDirty: true },
+            year: { numeric, between: between(1900, 2200), $autoDirty: true },
+            director: { $autoDirty: true },
+            rate: { numeric, $autoDirty: true}
             }
         }
     },
@@ -75,7 +82,7 @@ export default {
         },
         Save() {
             console.log(this.v$)
-            this.v$.$validate()
+            this.v$.$touch()
             if (this.v$.$error) {
                 return;
             }
@@ -94,3 +101,11 @@ export default {
 }
 
 </script>
+
+<style>
+/* class error with red text */
+.error {
+    color: red;
+}
+
+</style>
