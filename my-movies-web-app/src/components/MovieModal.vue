@@ -9,7 +9,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                    <label for="movieTitle" class="form-label">Title</label>
+                    <label for="movieTitle" class="form-label" >Title</label>
                     <input type="text" class="form-control" id="movieTitle" v-model="movie.title">
                     </div>
                     <div class="mb-3">
@@ -56,6 +56,10 @@ export default {
     methods: {
         OpenCloseFun() {
             this.OpenClose = !this.OpenClose;
+        },
+        Save() {
+            this.$emit('saveMovie', this.selectedMovie);
+            this.OpenClose = false;
         }
     },
     watch: {
