@@ -91,7 +91,7 @@ export default {
             this.$refs.movieModal.OpenCloseFun();
         },
         openEditModal(movie) {
-            this.selectedMovie = movie;
+            this.selectedMovie = Object.assign({}, movie);
             this.$refs.movieModal.OpenCloseFun();
         },
         saveMovie(movie) {
