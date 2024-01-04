@@ -50,7 +50,7 @@ export default {
     data() {
         return {
             OpenClose: this.visible,
-            selectedMovie: this.movie
+            selectedMovie: Object.assign({}, this.movie),
         }
     },
     methods: {

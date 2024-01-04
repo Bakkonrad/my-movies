@@ -22,7 +22,7 @@
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
-                    <tbody v-if="this.movies.length > 0 && this.responseCode == 200">
+                    <tbody v-if="this.movies.length > 0 && this.loaded == true">
                         <tr v-for="movie in movies" :key="movie.id">
                             <td>{{ movie.id }}</td>
                             <td>{{ movie.title }}</td>
@@ -40,14 +40,9 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody v-else-if="this.movies.length == 0 && this.responseCode == 200">
+                    <tbody v-else-if="this.movies.length == 0 && this.loaded == true">
                         <tr>
                             <td colspan="6" class="text-center">No movies found.</td>
-                        </tr>
-                    </tbody>
-                    <tbody v-else-if="this.responseCode != 200 && this.loaded == true">
-                        <tr>
-                            <td colspan="6" class="text-center">Error loading movies...</td>
                         </tr>
                     </tbody>
                     <tbody v-else-if="this.loaded == false">
@@ -98,6 +93,7 @@ export default {
             this.$refs.movieModal.OpenCloseFun();
         },
         saveMovie(movie) {
+            console.log(movie);
             if (movie.id) {
                 this.updateMovie(movie);
             } else {
@@ -119,7 +115,9 @@ export default {
             axios.get('http://localhost:5178/Movies/external').then(res => {
                 this.getMovies();
             })
-            .catch(this.handleError);
+            .catch(error => {
+                this.handleError(error);
+            });
         },
         addMovie(movie) {
             axios.post('http://localhost:5178/Movies/', movie).then(res => {
@@ -137,7 +135,7 @@ export default {
             if (err.response) {
             // The request was made and the server responded with a status code
             this.responseCode = err.response.status;
-            this.err = this.getErrorMessage(err.response.data);
+            this.err = err.message;
             } else if (err.request) {
             // The request was made but no response was received
             this.err = 'No response received from the server.';
@@ -147,19 +145,6 @@ export default {
             }
             this.loaded = true;
         },
-        getErrorMessage(errorData){
-            if(errorData){
-                if(errorData.errors){
-                    return errorData.errors[0].message;
-                }
-                else{
-                    return errorData.message;
-                }
-            }
-            else{
-                return "Error loading movies...";
-            }
-        }
     },
 components: {
     MovieModal
